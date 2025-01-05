@@ -59,35 +59,30 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center w-full rounded-xl">
         {/* Heading */}
         <h1
-          className={`text-[5rem] font-bold text-neutralDark ${fugaz.className}`}
+          className={`text-[3rem] md:text-[5rem] font-bold text-neutralDark ${fugaz.className}`}
         >
           NEXT STOP,
         </h1>
 
         {/* Sub */}
-        <div className="w-full my-6">
-          <h2
-            // className={`text-3xl font-semibold text-neutralDark ${fugaz.className}`}
-            className="text-3xl font-bold text-neutralDark/80"
-          >
+        <div className="w-full my-4 md:my-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-neutralDark/80">
             Your Perfect Getaway
           </h2>
-          <p
-            // className={`mt-2 text-lg text-neutralDark opacity-70 ${fugaz.className}`}
-            className="mt-1 text-md text-neutralDark/80 "
-          >
+          <p className="mt-1 text-sm md:text-md text-neutralDark/80">
             Plan Smart, Travel Freely, Made by Your Choice
           </p>
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col items-center justify-center w-3/5 gap-8 mt-8 sm:flex-row">
+        <div className="flex flex-col items-center justify-center w-full md:w-3/5 gap-4 md:gap-8 mt-6 md:mt-8 sm:flex-row">
           <Button
             text="Planning Trip"
             color="neutralDark"
             dark={false}
             font="fugaz"
             href="/planning/purpose"
+            className="w-full sm:w-auto"
           />
           <Button
             text="Random Trip"
@@ -95,6 +90,7 @@ export default function Hero() {
             dark={false}
             font="fugaz"
             href="/random"
+            className="w-full sm:w-auto"
           />
         </div>
       </div>
