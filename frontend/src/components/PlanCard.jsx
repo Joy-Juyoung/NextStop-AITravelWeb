@@ -50,7 +50,7 @@ export default function PlanCard({
         </p>
       </div>
 
-      <div className="flex items-center justify-between w-full p-4 border-t border-gray-400">
+      <div className="flex items-center justify-between w-full p-4 border-t border-gray-300">
         <span className="text-md">✨</span>
       </div>
     </div>

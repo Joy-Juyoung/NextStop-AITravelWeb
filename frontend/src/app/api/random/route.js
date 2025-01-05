@@ -15,7 +15,8 @@ export async function POST(request) {
       });
     }
 
-    const prompt = `Suggest a travel destination and a short itinerary for the type by short paragraph"${type}".`;
+    const prompt = `As a travel advisor, suggest a destination for a ${type}. 
+    Start your response with "SPOT: [City/Country Name]" and then provide a short paragraph about what makes this destination perfect for this type of traveler.`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4",
@@ -23,6 +24,7 @@ export async function POST(request) {
     });
 
     const result = response.choices[0]?.message?.content;
+    console.log("OpenAI Response:", result);
 
     return new Response(JSON.stringify({ result }), { status: 200 });
   } catch (error) {

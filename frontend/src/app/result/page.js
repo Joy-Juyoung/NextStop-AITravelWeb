@@ -64,7 +64,7 @@ export default function page() {
               selectedBox === boxNumber ? (
                 <CountryFlag countryName={shuffledCountries[boxNumber - 1]} />
               ) : (
-                "Open"
+                "Discover"
               )
             }
           />
@@ -73,4 +73,3 @@ export default function page() {
     </div>
   );
 }
-

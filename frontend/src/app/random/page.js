@@ -18,9 +18,9 @@ const ResultModal = ({ isOpen, onClose, result, type }) => {
         return "No destination available";
       }
 
-      const destinationMatch = text.match(/Travel Destination:\s*([^.]+)/);
-      if (destinationMatch && destinationMatch[1]) {
-        return destinationMatch[1].trim();
+      const spotMatch = text.match(/SPOT:\s*([^\.]+)/);
+      if (spotMatch && spotMatch[1]) {
+        return spotMatch[1].trim();
       }
 
       return "Unknown Destination";
@@ -50,9 +50,14 @@ const ResultModal = ({ isOpen, onClose, result, type }) => {
           </div>
 
           <div className="border-b border-gray-100 pb-4">
-            <h4 className="text-xl font-semibold text-gray-900">
-              {destination}
+            <h4 className="text-xl font-bold text-gray-900">
+              {destination.split(",")[0]}
             </h4>
+            <p className="text-sm text-gray-900 mt-2">
+              {destination.includes(",")
+                ? destination.split(",").slice(1).join(",")
+                : ""}{" "}
+            </p>
           </div>
 
           <button
@@ -80,7 +85,6 @@ export default function RandomPlanner() {
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
-
     setShuffledImages(shuffled);
   }, []);
 
