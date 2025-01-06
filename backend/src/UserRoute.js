@@ -69,3 +69,4 @@ router.get("/get-options/:question", async (req, res) => {
 });
 
 module.exports = router;
+

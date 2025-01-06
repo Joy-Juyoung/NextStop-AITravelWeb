@@ -82,3 +82,4 @@ Return the result in the following JSON format:
 };
 
 module.exports = { getAIResponse };
+

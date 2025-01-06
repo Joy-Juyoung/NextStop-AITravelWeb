@@ -1,27 +1,35 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, Suspense } from "react";
 import { db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import DestinationCard from "@/components/DestinationCard";
 import HomeButton from "@/components/HomeButton";
-export default function PlanResult() {
+
+/**
+ * 🔹 PlanResultContent 컴포넌트 (실제 로직 포함)
+ */
+function PlanResultContent() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
   const searchParams = useSearchParams();
-  const documentId = searchParams.get("id");
+  const documentId = searchParams?.get("id");
 
+  /**
+   * Firestore에서 사용자 데이터 가져오기
+   */
   useEffect(() => {
-    const fetchResult = async () => {
-      try {
-        if (!documentId) {
-          console.warn("No document ID found in the URL.");
-          setLoading(false);
-          return;
-        }
+    const fetchUserData = async () => {
+      if (!documentId) {
+        console.warn("No document ID found in the URL.");
+        setLoading(false);
+        return;
+      }
 
+      try {
         const docRef = doc(db, "user_selections", documentId);
         const docSnap = await getDoc(docRef);
 
@@ -31,63 +39,69 @@ export default function PlanResult() {
           console.warn("No document found with the provided ID.");
         }
       } catch (error) {
-        console.error("Error fetching result:", error);
+        console.error("Error fetching user data:", error);
       }
     };
-    fetchResult();
+
+    fetchUserData();
   }, [documentId]);
 
+  /**
+   * AI API에서 결과 가져오기
+   */
   useEffect(() => {
-    const fetchResult = async () => {
+    const fetchAIResult = async () => {
+      if (!documentId) return;
+
       try {
-        const response = await fetch(`http://localhost:3001/api/chat`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ docID: documentId }),
-        });
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ docID: documentId }),
+          }
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch result");
+          throw new Error(`Failed to fetch result: ${response.statusText}`);
         }
 
         const data = await response.json();
-        let parsedResult;
 
+        let parsedResult;
         try {
           parsedResult = JSON.parse(
-            data.result
-              .replace(/^```json/, "")
-              .replace(/```$/, "")
-              .trim()
+            data.result.replace(/^```json/, "").replace(/```$/, "").trim()
           );
-
           setResult(parsedResult);
         } catch (parseError) {
           console.error("Error parsing JSON:", parseError);
           setResult([]);
         }
       } catch (error) {
-        console.error("Error fetching result:", error);
+        console.error("Error fetching AI result:", error);
         setResult([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchResult();
+    fetchAIResult();
   }, [documentId]);
-
-  console.log("result", result);
-  console.log("userData", userData);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
   if (!userData || result.length === 0) {
-    return <p>No data available</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl font-semibold">No data available</p>
+      </div>
+    );
   }
 
   return (
@@ -103,9 +117,17 @@ export default function PlanResult() {
           />
         ))}
       </div>
-      <div className="flex justify-center w-full mt-8">
-        <HomeButton />
-      </div>
-    </div>
+          </div>
+  );
+}
+
+/**
+ * 🔹 Suspense로 PlanResultContent 감싸기
+ */
+export default function PlanResult() {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <PlanResultContent />
+    </Suspense>
   );
 }
