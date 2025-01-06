@@ -7,8 +7,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://hackathon-web-lime.vercel.app/planResult?id=i4AMeGIHmRpyFYrREjVy" ||
-        "http://localhost:3000",
+      "https://hackathon-web-lime.vercel.app/planResult?id=i4AMeGIHmRpyFYrREjVy",
+      "http://localhost:3000",
       "http://localhost:3001",
       "https://hackathon-web-4ov5.onrender.com/api/chat",
     ],
