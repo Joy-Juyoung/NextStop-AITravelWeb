@@ -54,17 +54,13 @@ function PlanResultContent() {
       if (!documentId) return;
 
       try {
-        const response = await fetch(
-          "https://hackathon-web-4ov5.onrender.com/api/chat" ||
-            "http://localhost:3001/api/chat",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ docID: documentId }),
-          }
-        );
+        const response = await fetch(`/api/chat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ docID: documentId }),
+        });
 
         if (!response.ok) {
           throw new Error(`Failed to fetch result: ${response.statusText}`);

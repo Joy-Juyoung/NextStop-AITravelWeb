@@ -7,10 +7,13 @@ const app = express();
 app.use(
   cors({
     origin: ["https://hackathon-web-lime.vercel.app", "http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 app.use("/api", userRoute);
