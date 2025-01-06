@@ -55,7 +55,8 @@ function PlanResultContent() {
 
       try {
         const response = await fetch(
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/chat",
+          "https://hackathon-web-4ov5.onrender.com/api/chat" ||
+            "http://localhost:3001/api/chat",
           {
             method: "POST",
             headers: {
@@ -74,7 +75,10 @@ function PlanResultContent() {
         let parsedResult;
         try {
           parsedResult = JSON.parse(
-            data.result.replace(/^```json/, "").replace(/```$/, "").trim()
+            data.result
+              .replace(/^```json/, "")
+              .replace(/```$/, "")
+              .trim()
           );
           setResult(parsedResult);
         } catch (parseError) {
@@ -117,7 +121,7 @@ function PlanResultContent() {
           />
         ))}
       </div>
-          </div>
+    </div>
   );
 }
 
